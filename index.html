@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<meta name="applicable-device" content="pc,mobile"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<title>垃圾分类小游戏</title>
+		<script type="text/javascript" src="js/jquery-1.8.2.min.js" ></script>	
+		<script type="text/javascript" src="js/inobounce.js" ></script>
+	</head>
+	<body>
+		<div class="bg_b"><img src="img/bg_index.png" width="100%" height="100%"></div>
+		<div class="wrap_con">
+			<div class="con_idx">
+				<div class="top_idx">
+					<div class="score_idx">
+						<img src="img/bg_score.png">
+						<p class="score_t">0</p>
+					</div>
+					<div class="bgm_idx">								
+						<div id="play_btn">
+							<button type="button" class="icon_bgm"></button>
+							<audio src="img/bg.mp3" loop preload></audio>
+						</div>
+					</div>
+				</div>
+				<div class="top_r_idx">
+					<div class="icon_rule" id="btn_rule">
+						<!--<img src="img/icon_rule.png">-->
+					</div>
+				</div>
+				<div class="tit_idx"><img src="img/tit_idx.png"></div>
+				<p class="txt_idx">北京市西城区城市管理委员会</p>
+				<a class="btn_idxBot" href="game.html">
+					<span class="btn_start"></span>
+					<!--<img src="img/btn_start.png" class="btn_start">-->
+				</a>
+			</div>
+		</div>
+		<!--规则弹出 start-->
+		<div class="pop_rule">
+			<div class="mask"></div>
+			<div id="rule_close"><img src="img/btn_close.png"></div>
+			<div id="tab">
+				<ul class="tab_menu">
+			    	<li class="selected">游戏规则</li>
+			        <li>垃圾分类规则</li>
+			    </ul>
+			    <div class="tab_box">
+			    	<div class="txt_popR">
+			    		<p>1、垃圾投放正确一次得10个金币</p>
+			    		<p>2、垃圾投放正确一次扣除10个金币</p>
+			    	</div>
+			        <div class="txt_popR hide">
+			        	<p>首先，要理顺垃圾分类工作的环节及相互关系，做到分工细致、流程简化、条理缜密、管理有序</p>
+			        	<p>其次，要把垃圾分类纳入社区自治内容，明确主体职责，充分调动公众和管理者的主动性和积极性。</p>
+			        	<p>第三，应坚持先易后难，循序渐进原则，制定切实可行的垃圾分类实施方案和执法监督计划。</p>
+			        	<p>第四，通过强化垃圾的物质利用促进垃圾分类。</p>
+			        	<p>第五，合理利用经济激励手段，树立垃圾排放成本意识。</p>
+			        	<p>最后，应加强垃圾分类及分类处理监管。</p>
+			        </div>
+			    </div>
+			</div>			
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#btn_rule').click(function(){
+					$('.mask').show();
+					$('.pop_rule').show();	
+				});
+				$('#rule_close').click(function(){
+					$('.pop_rule').hide();
+					$('.mask').hide();
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var $tab_li = $('#tab ul li');
+				$tab_li.hover(function(){
+					$(this).addClass('selected').siblings().removeClass('selected');
+					var index = $tab_li.index(this);
+					$('div.tab_box > div').eq(index).show().siblings().hide();
+				});	
+			});
+		</script>
+		<!--规则弹出 end-->
+		
+		<!--音乐播放暂停 -->	
+	    <script>
+		    /* touchstart,DOMContentLoaded无法在jQuery.ready里执行监听操作 */
+		    function autoPlay() {
+		        /* 自动播放音乐效果，解决浏览器或者APP自动播放问题 */
+		        function musicInBrowserHandler() {
+		            audioToggle(true);
+		            document.body.removeEventListener('touchstart', musicInBrowserHandler);
+		        }
+		        document.body.addEventListener('touchstart', musicInBrowserHandler);
+		
+		        /* 自动播放音乐效果，解决微信自动播放问题 */
+		        function musicInWeixinHandler() {
+		            audioToggle(true);
+		            document.addEventListener('WeixinJSBridgeReady', function() {
+		                audioToggle(true);
+		            }, false);
+		            document.addEventListener('YixinJSBridgeReady', function() {
+		                audioToggle(true);
+		            }, false);
+		            document.removeEventListener('DOMContentLoaded', musicInWeixinHandler);
+		        }
+		        document.addEventListener('DOMContentLoaded', musicInWeixinHandler);
+		    }
+		    autoPlay();
+		
+		    // ====================================================
+		
+		    function audioToggle(isPlay) {
+		        var playBtn = document.getElementById('play_btn');
+		        var audio = playBtn.getElementsByTagName('audio')[0];
+		
+		        if (typeof(isPlay) == 'undefined') {
+		            isPlay = !!audio.paused;
+		        }
+		
+		        var space = String.fromCharCode(32); // 空格
+		        var playBtnClass = space + (playBtn.getAttribute('class') || (isPlay ? 'play' : 'pause')) + space;
+		        if (isPlay) {
+		            playBtnClass = playBtnClass.replace(space + 'pause' + space, space + 'play' + space);
+		            audio.play();
+		        } else {
+		            playBtnClass = playBtnClass.replace(space + 'play' + space, space + 'pause' + space);
+		            audio.pause();
+		        }
+		        playBtn.className = playBtnClass.replace(/(^\s*)|(\s*$)/g, '');
+		    }
+		
+		    document.getElementById('play_btn').onclick = function() {
+		        audioToggle();
+		    }
+	    </script>
+    	           
+	</body>
+</html>
